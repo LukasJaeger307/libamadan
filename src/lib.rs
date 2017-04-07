@@ -47,7 +47,7 @@ mod tests {
             let result : f64;
             result = *current;
             let mut rng = rand::thread_rng();
-            result + rng.gen::<f64>()
+            result + rng.gen_range(-1.0, 1.0)
         }
     }
     
@@ -63,7 +63,7 @@ mod tests {
     fn test_hillclimbing(){
         let rsg = SquareRandomSolutionGenerator{};
         let fitness_function = SquareFitnessFunction{};
-        let hillclimber : Hillclimbing<f64> = Hillclimbing::new();
+        let hillclimber : Hillclimbing<f64> = Hillclimbing::new(10000, 100);
         let optimum = hillclimber.find(&rsg, &fitness_function);
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
