@@ -5,6 +5,6 @@
  * To Public License, Version 2, as published by Sam Hocevar. See
  * http://www.wtfpl.net/ for more details. 
  */
-pub trait FitnessFunction<S>{
+pub trait FitnessFunction<S : Clone>{
     fn get_fitness(&self, solution:&S) -> f64;
 }

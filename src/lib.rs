@@ -4,6 +4,7 @@ mod fitnessfunction;
 mod rndsolutiongenerator;
 mod metaheuristic;
 mod hillclimbing;
+mod rrt;
 
 #[cfg(test)]
 mod tests {
@@ -13,6 +14,7 @@ mod tests {
     use metaheuristic::Metaheuristic;
     use hillclimbing::Hillclimbing;
     use rand::Rng;
+    use rrt::RRT;
     
     struct SquareFitnessFunction;
     
@@ -65,6 +67,17 @@ mod tests {
         let fitness_function = SquareFitnessFunction{};
         let hillclimber : Hillclimbing<f64> = Hillclimbing::new(10000, 100);
         let optimum = hillclimber.find(&rsg, &fitness_function);
+        println!("Optimum: {}", optimum);
+        assert!(optimum > 0.0);
+        assert!(optimum < 2.0);
+    }
+    
+    #[test]
+    fn test_rrt(){
+        let rsg = SquareRandomSolutionGenerator{};
+        let fitness_function = SquareFitnessFunction{};
+        let rrt : RRT<f64> = RRT::new(10000, 100, 0.5);
+        let optimum = rrt.find(&rsg, &fitness_function);
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);

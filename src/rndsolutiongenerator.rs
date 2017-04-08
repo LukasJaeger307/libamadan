@@ -6,7 +6,7 @@
  * http://www.wtfpl.net/ for more details. 
  */
 
- pub trait RandomSolutionGenerator<S>{
+ pub trait RandomSolutionGenerator<S : Clone>{
     fn generate_random(&self) -> S;
     fn mutate(&self, current : &S) -> S;
  }

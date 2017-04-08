@@ -9,6 +9,6 @@
 use rndsolutiongenerator::RandomSolutionGenerator;
 use fitnessfunction::FitnessFunction;
  
-pub trait Metaheuristic<S>{
+pub trait Metaheuristic<S : Clone>{
     fn find(&self, rsg : &RandomSolutionGenerator<S>, fitness_function : &FitnessFunction<S>) -> S;
 }
