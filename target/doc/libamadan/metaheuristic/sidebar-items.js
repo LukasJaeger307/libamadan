@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["Metaheuristic","The Metaheuristic trait is used to generalize the interface of the different metaheuristics."]]});

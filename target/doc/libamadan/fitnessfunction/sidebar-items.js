@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["FitnessFunction","This trait is used for all structs that evaluate the fitness of a solution. Fitness functions' implementations are problem-dependant."]]});
