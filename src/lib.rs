@@ -1,10 +1,10 @@
 extern crate rand;
 
-mod fitnessfunction;
-mod rndsolutiongenerator;
-mod metaheuristic;
-mod hillclimbing;
-mod rrt;
+pub mod fitnessfunction;
+pub mod rndsolutiongenerator;
+pub mod metaheuristic;
+pub mod hillclimbing;
+pub mod rrt;
 
 #[cfg(test)]
 mod tests {

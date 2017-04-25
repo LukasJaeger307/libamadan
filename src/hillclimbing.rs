@@ -11,13 +11,23 @@ use rndsolutiongenerator::RandomSolutionGenerator;
 use fitnessfunction::FitnessFunction;
 use std::marker::PhantomData;
  
+/// Hillclimbing is the most basic metaheuristic. It starts with a random solution,
+/// mutates it slightly and if it achieves a better fitness after mutation than before,
+/// it replaces the initial solution. This is re-iterated until a given maximum number
+/// of iterations is reached or if a given maximum number of failed iterations is exceeded.
+/// This metaheuristic has no way of avoiding local maxima. If it gets stuck in a local 
+/// maximum, it has no chance of ever leaving it again.
 pub struct Hillclimbing<S : Clone>{
     resource_type: PhantomData<S>,
     max_iterations: u64,
     max_failed_iterations: u64
 }
 
+/// The implementation of the constructor for hillclimbing
 impl<S> Hillclimbing<S> where S: Clone{
+    /// Constructor for hillclimbing. Requires the maximum number of
+    /// overall iterations and the maximum number of failed iterations
+    /// as a parameter.
     pub fn new(max_iterations : u64, max_failed_iterations : u64) -> Hillclimbing<S>{
         Hillclimbing{resource_type: PhantomData,
             max_iterations : max_iterations,
@@ -26,7 +36,9 @@ impl<S> Hillclimbing<S> where S: Clone{
     }
 }
 
+/// Implementation of the Metaheuristic trait
 impl<S> Metaheuristic<S> for Hillclimbing<S> where S: Clone{
+    ///Implementation of the find-method
     fn find(&self, rsg : &RandomSolutionGenerator<S>, fitness_function : &FitnessFunction<S>) -> S{
         let mut current : S;
         let mut tmp : S;

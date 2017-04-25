@@ -6,7 +6,12 @@
  * http://www.wtfpl.net/ for more details. 
  */
 
+ /// Trait for structs that generate random solutions
+ /// and mutate them randomly.
  pub trait RandomSolutionGenerator<S : Clone>{
+    /// Generates a random solution
     fn generate_random(&self) -> S;
+    
+    /// Mutates a given solution randomly
     fn mutate(&self, current : &S) -> S;
  }

@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["RandomSolutionGenerator","Trait for structs that generate random solutions and mutate them randomly."]]});

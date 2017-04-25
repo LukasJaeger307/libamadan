@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["fitnessfunction",""],["hillclimbing",""],["metaheuristic",""],["rndsolutiongenerator",""]]});

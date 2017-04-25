@@ -9,6 +9,11 @@
 use rndsolutiongenerator::RandomSolutionGenerator;
 use fitnessfunction::FitnessFunction;
  
+/// The Metaheuristic trait is used to generalize the interface of
+/// the different metaheuristics.
 pub trait Metaheuristic<S : Clone>{
+    /// The actual metaheuristic optimization function. It finds a
+    /// solution close to the optimimum, using a random solution generator 
+    /// and a function to evaluate a solution's fitness.
     fn find(&self, rsg : &RandomSolutionGenerator<S>, fitness_function : &FitnessFunction<S>) -> S;
 }
