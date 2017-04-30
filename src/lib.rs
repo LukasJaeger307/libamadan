@@ -5,6 +5,7 @@ pub mod rndsolutiongenerator;
 pub mod metaheuristic;
 pub mod hillclimbing;
 pub mod rrt;
+pub mod gda;
 
 #[cfg(test)]
 mod tests {
@@ -15,6 +16,7 @@ mod tests {
     use hillclimbing::Hillclimbing;
     use rand::Rng;
     use rrt::RRT;
+    use gda::GDA;
     
     struct SquareFitnessFunction;
     
@@ -78,6 +80,17 @@ mod tests {
         let fitness_function = SquareFitnessFunction{};
         let rrt : RRT<f64> = RRT::new(10000, 100, 0.5);
         let optimum = rrt.find(&rsg, &fitness_function);
+        println!("Optimum: {}", optimum);
+        assert!(optimum > 0.0);
+        assert!(optimum < 2.0);
+    }
+    
+    #[test]
+    fn test_gda(){
+        let rsg = SquareRandomSolutionGenerator{};
+        let fitness_function = SquareFitnessFunction{};
+        let gda : GDA<f64> = GDA::new(10000, 100, -4000.0, 0.5);
+        let optimum = gda.find(&rsg, &fitness_function);
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);
