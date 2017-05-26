@@ -46,15 +46,13 @@ impl<S> Metaheuristic<S> for RRT<S> where S: Clone{
         let mut current : S;
         let mut tmp : S;
         let mut record : S;
-        let mut current_fitness : f64;
-        let mut tmp_fitness : f64 = 0.0;
-        let mut record_fitness : f64 = 0.0;
+        let mut tmp_fitness : f64; 
+        let mut record_fitness : f64;
         let mut iterations : u64 = 0;
         let mut failed_iterations : u64 = 0;
         current = rsg.generate_random();
-        current_fitness = fitness_function.get_fitness(&current);
         record = current.clone();
-        record_fitness = current_fitness;
+        record_fitness = fitness_function.get_fitness(&current);
         while (iterations < self.max_iterations) & (failed_iterations < self.max_failed_iterations){
             tmp = rsg.mutate(&current);
             tmp_fitness = fitness_function.get_fitness(&tmp);
@@ -64,7 +62,6 @@ impl<S> Metaheuristic<S> for RRT<S> where S: Clone{
             }
             if tmp_fitness > record_fitness - self.max_deviation{
                 current = tmp;
-                current_fitness = tmp_fitness;
                 failed_iterations = 0;
             }
             else{
