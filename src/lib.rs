@@ -6,6 +6,8 @@ pub mod metaheuristic;
 pub mod hillclimbing;
 pub mod rrt;
 pub mod gda;
+pub mod recombinationgenerator;
+pub mod genetic;
 
 #[cfg(test)]
 mod tests {
@@ -14,9 +16,11 @@ mod tests {
     use rndsolutiongenerator::RandomSolutionGenerator;
     use metaheuristic::Metaheuristic;
     use hillclimbing::Hillclimbing;
+    use recombinationgenerator::RecombinationGenerator;
     use rand::Rng;
     use rrt::RRT;
     use gda::GDA;
+    use genetic::GeneticAlgorithm;
     
     struct SquareFitnessFunction;
     
@@ -52,6 +56,25 @@ mod tests {
             result = *current;
             let mut rng = rand::thread_rng();
             result + rng.gen_range(-1.0, 1.0)
+        }
+    }
+
+    struct FloatRecombinationGenerator;
+
+    impl RecombinationGenerator<f64> for FloatRecombinationGenerator{
+        fn recombine(&self, i1 : &f64, i2 : &f64) -> f64{
+            let max : f64;
+            let min : f64;
+            if *i1 > *i2{
+                max = *i1;
+                min = *i2;
+            }
+            else{
+                max = *i2;
+                min = *i1;
+            }
+            let diff : f64 = (max - min) / 2.0;
+            max - diff
         }
     }
     
@@ -94,6 +117,38 @@ mod tests {
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);
+    }
+
+    #[test]
+    fn test_genetic(){
+        let rsg = SquareRandomSolutionGenerator{};
+        let fitness_function = SquareFitnessFunction{};
+        let rg = FloatRecombinationGenerator{};
+        let genetic : GeneticAlgorithm <f64> = GeneticAlgorithm::new(60,&rg);
+        let optimum = genetic.find(&rsg, &fitness_function);        
+        println!("Optimum: {}", optimum);
+        assert!(optimum > 0.0);
+        assert!(optimum < 2.0);
+    }
+
+    #[test]
+    fn test_recombination_generator(){
+        let mut f1 = 1.0;
+        let mut f2 = 2.0;
+        let rg = FloatRecombinationGenerator{};
+        let mut recombined = rg.recombine(&f1,&f2);
+        assert!(recombined > 1.499999);
+        assert!(recombined < 1.500001);
+        f1 = -1.0;
+        f2 = -2.0;
+        recombined = rg.recombine(&f1, &f2);
+        assert!(recombined > -1.500001);
+        assert!(recombined < -1.499999);
+        f1 = 1.0;
+        f2 = -2.0;
+        recombined = rg.recombine(&f1, &f2);
+        assert!(recombined > -0.500001);
+        assert!(recombined < -0.499999);
     }
     
     #[test]
