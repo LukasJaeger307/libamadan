@@ -90,8 +90,8 @@ mod tests {
     fn test_hillclimbing(){
         let rsg = SquareRandomSolutionGenerator{};
         let fitness_function = SquareFitnessFunction{};
-        let hillclimber : Hillclimbing<f64> = Hillclimbing::new(10000, 100);
-        let optimum = hillclimber.find(&rsg, &fitness_function);
+        let hillclimber : Hillclimbing<f64> = Hillclimbing::new(&rsg, &fitness_function,10000, 100);
+        let optimum = hillclimber.find();
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);
@@ -101,8 +101,8 @@ mod tests {
     fn test_rrt(){
         let rsg = SquareRandomSolutionGenerator{};
         let fitness_function = SquareFitnessFunction{};
-        let rrt : RRT<f64> = RRT::new(10000, 100, 0.5);
-        let optimum = rrt.find(&rsg, &fitness_function);
+        let rrt : RRT<f64> = RRT::new(&rsg, &fitness_function, 10000, 100, 0.5);
+        let optimum = rrt.find();
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);
@@ -112,8 +112,8 @@ mod tests {
     fn test_gda(){
         let rsg = SquareRandomSolutionGenerator{};
         let fitness_function = SquareFitnessFunction{};
-        let gda : GDA<f64> = GDA::new(10000, 100, -4000.0, 0.5);
-        let optimum = gda.find(&rsg, &fitness_function);
+        let gda : GDA<f64> = GDA::new(&rsg, &fitness_function, 10000, 100, -4000.0, 0.5);
+        let optimum = gda.find();
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);
@@ -124,8 +124,8 @@ mod tests {
         let rsg = SquareRandomSolutionGenerator{};
         let fitness_function = SquareFitnessFunction{};
         let rg = FloatRecombinationGenerator{};
-        let genetic : GeneticAlgorithm <f64> = GeneticAlgorithm::new(60,&rg);
-        let optimum = genetic.find(&rsg, &fitness_function);        
+        let genetic : GeneticAlgorithm <f64> = GeneticAlgorithm::new(&rsg, &fitness_function, &rg, 60);
+        let optimum = genetic.find();        
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);

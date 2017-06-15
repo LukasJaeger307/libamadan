@@ -17,40 +17,44 @@ use std::marker::PhantomData;
 /// of iterations is reached or if a given maximum number of failed iterations is exceeded.
 /// This metaheuristic has no way of avoiding local maxima. If it gets stuck in a local 
 /// maximum, it has no chance of ever leaving it again.
-pub struct Hillclimbing<S : Clone>{
+pub struct Hillclimbing<'a, S : Clone + 'a>{
     resource_type: PhantomData<S>,
     max_iterations: u64,
-    max_failed_iterations: u64
+    max_failed_iterations: u64,
+    random_solution_generator : &'a RandomSolutionGenerator<S>,
+    fitness_function : &'a FitnessFunction<S>
 }
 
 /// The implementation of the constructor for hillclimbing
-impl<S> Hillclimbing<S> where S: Clone{
+impl<'a, S> Hillclimbing<'a, S> where S: Clone{
     /// Constructor for hillclimbing. Requires the maximum number of
     /// overall iterations and the maximum number of failed iterations
     /// as a parameter.
-    pub fn new(max_iterations : u64, max_failed_iterations : u64) -> Hillclimbing<S>{
+    pub fn new(random_solution_generator : &'a RandomSolutionGenerator<S>, fitness_function : &'a FitnessFunction<S>, max_iterations : u64, max_failed_iterations : u64) -> Hillclimbing<'a, S>{
         Hillclimbing{resource_type: PhantomData,
             max_iterations : max_iterations,
             max_failed_iterations : max_failed_iterations,
+            random_solution_generator : random_solution_generator,
+            fitness_function : fitness_function,
         }
     }
 }
 
 /// Implementation of the Metaheuristic trait
-impl<S> Metaheuristic<S> for Hillclimbing<S> where S: Clone{
+impl<'a, S> Metaheuristic<S> for Hillclimbing<'a, S> where S: Clone{
     ///Implementation of the find-method
-    fn find(&self, rsg : &RandomSolutionGenerator<S>, fitness_function : &FitnessFunction<S>) -> S{
+    fn find(&self) -> S{
         let mut current : S;
         let mut tmp : S;
         let mut current_fitness : f64;
         let mut tmp_fitness : f64;
         let mut iterations : u64 = 0;
         let mut failed_iterations : u64 = 0;
-        current = rsg.generate_random();
-        current_fitness = fitness_function.get_fitness(&current);
+        current = self.random_solution_generator.generate_random();
+        current_fitness = self.fitness_function.get_fitness(&current);
         while (iterations < self.max_iterations) & (failed_iterations < self.max_failed_iterations){
-            tmp = rsg.mutate(&current);
-            tmp_fitness = fitness_function.get_fitness(&tmp);
+            tmp = self.random_solution_generator.mutate(&current);
+            tmp_fitness = self.fitness_function.get_fitness(&tmp);
             if tmp_fitness > current_fitness{
                 current = tmp;
                 current_fitness = tmp_fitness;
