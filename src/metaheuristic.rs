@@ -6,9 +6,6 @@
  * http://www.wtfpl.net/ for more details. 
  */
  
-use rndsolutiongenerator::RandomSolutionGenerator;
-use fitnessfunction::FitnessFunction;
- 
 /// The Metaheuristic trait is used to generalize the interface of
 /// the different metaheuristics.
 pub trait Metaheuristic<S : Clone>{
