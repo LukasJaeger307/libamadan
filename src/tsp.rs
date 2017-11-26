@@ -103,13 +103,24 @@ impl TSPFitnessFunction{
 impl FitnessFunction<TSP> for TSPFitnessFunction {
     fn get_fitness(&self, solution: &TSP) -> f64{
         if self.num_nodes == solution.num_nodes {
-            let mut fitness : f64 = 0.0;
+            // Determining the maximum value in
+            // the matrix
+            let mut max_val : f64 = -1.0;
+            for x in 0..self.num_nodes {
+                for y in x..self.num_nodes {
+                    let current = self.matrix[x as usize][y as usize];
+                    if current > max_val{
+                        max_val = current;
+                    }
+                }
+            }
+            let mut distance : f64 = 0.0;
             for x in 0..(solution.get_num_nodes()) {
                 let node1 : u32 = solution.get_node(x);
                 let node2 : u32 = solution.get_node((x + 1) % solution.get_num_nodes());
-                fitness += self.get_distance(node1, node2);
+                distance += self.get_distance(node1, node2);
             }
-            fitness
+            (max_val * (self.num_nodes as f64)) - distance
         } else {
             0.0
         }

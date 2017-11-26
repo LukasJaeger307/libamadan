@@ -225,7 +225,8 @@ mod tests {
         tsp.set_node(1, 2);
         tsp.set_node(2, 1);
        
-        assert!(fitness_function.get_fitness(&tsp) == 6.0);
+        assert!((fitness_function.get_fitness(&tsp) > 2.9) &
+                (fitness_function.get_fitness(&tsp) < 3.1));
         let tsp2 = TSP::new(4);
         assert!(fitness_function.get_fitness(&tsp2) == 0.0);
     }
