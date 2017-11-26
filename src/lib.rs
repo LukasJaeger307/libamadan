@@ -23,6 +23,7 @@ mod tests {
     use gda::GDA;
     //use genetic::GeneticAlgorithm;
     use tsp::TSP;
+    use tsp::TSPFitnessFunction;
     
     struct SquareFitnessFunction;
     
@@ -201,6 +202,18 @@ mod tests {
         assert!(tsp2.get_distance(2, 0) == 3.0);
         assert!(tsp2.get_distance(2, 1) == 2.0);
         assert!(tsp2.get_distance(2, 2) == 0.0);
+    }
+    
+    #[test]
+    fn test_tsp_fitness_function(){
+        let mut tsp = TSP::new(3);
+        tsp.set_distance(1, 0, 1.0);
+        tsp.set_distance(1, 2, 2.0);
+        tsp.set_distance(0, 2, 3.0);
+        tsp.set_node(1, 2);
+        tsp.set_node(2, 1);
+        let fitness_function = TSPFitnessFunction{};
+        assert!(fitness_function.get_fitness(&tsp) == 6.0);
     }
     
     #[test]

@@ -8,7 +8,7 @@
  
 //use metaheuristic::Metaheuristic;
 //use rndsolutiongenerator::RandomSolutionGenerator;
-//use fitnessfunction::FitnessFunction;
+use fitnessfunction::FitnessFunction;
 
 use std::f64;
 
@@ -36,6 +36,10 @@ impl TSP{
             list_nodes : list_nodes,
             matrix : matrix,
         }
+    }
+    
+    pub fn get_num_nodes(&self) -> u32{
+        self.num_nodes
     }
 
     pub fn get_distance (&self, node1 : u32, node2 : u32) -> f64{
@@ -84,21 +88,27 @@ impl Clone for TSP{
     }
 }
 
-/*
-struct TSPFitnessFunction;
+
+pub struct TSPFitnessFunction;
     
 impl FitnessFunction<TSP> for TSPFitnessFunction{
     fn get_fitness(&self, solution: &TSP) -> f64{
-        0.0
+        let mut fitness : f64 = 0.0;
+        for x in 0..(solution.get_num_nodes()) {
+            let node1 : u32 = solution.get_node(x);
+            let node2 : u32 = solution.get_node((x + 1) % solution.get_num_nodes());
+            fitness += solution.get_distance(node1, node2);
+        }
+        fitness
     }
 }
 
-    
-struct TSPRandomSolutionGenerator;
+
+/*struct TSPRandomSolutionGenerator;
     
 impl RandomSolutionGenerator<TSP> for TSPRandomSolutionGenerator{
     fn generate_random(&self) -> TSP{
-
+        
     }
         
     fn mutate(&self, current : &TSP) -> TSP{
