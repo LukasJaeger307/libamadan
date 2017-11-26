@@ -7,7 +7,8 @@ pub mod hillclimbing;
 pub mod rrt;
 pub mod gda;
 pub mod recombinationgenerator;
-pub mod genetic;
+//pub mod genetic;
+pub mod tsp;
 
 #[cfg(test)]
 mod tests {
@@ -20,7 +21,8 @@ mod tests {
     use rand::Rng;
     use rrt::RRT;
     use gda::GDA;
-    use genetic::GeneticAlgorithm;
+    //use genetic::GeneticAlgorithm;
+    use tsp::TSP;
     
     struct SquareFitnessFunction;
     
@@ -119,7 +121,7 @@ mod tests {
         assert!(optimum < 2.0);
     }
 
-    #[test]
+    /*#[test]
     fn test_genetic(){
         let rsg = SquareRandomSolutionGenerator{};
         let fitness_function = SquareFitnessFunction{};
@@ -129,7 +131,7 @@ mod tests {
         println!("Optimum: {}", optimum);
         assert!(optimum > 0.0);
         assert!(optimum < 2.0);
-    }
+    }*/
 
     #[test]
     fn test_recombination_generator(){
@@ -149,6 +151,33 @@ mod tests {
         recombined = rg.recombine(&f1, &f2);
         assert!(recombined > -0.500001);
         assert!(recombined < -0.499999);
+    }
+    
+    #[test]
+    fn test_tsp_new(){
+        let tsp = TSP::new(5);
+        assert!(tsp.get_distance(0, 1).is_finite());
+        assert!(tsp.get_distance(0, 5).is_infinite());
+        assert!(tsp.get_distance(5, 0).is_infinite());
+        assert!(tsp.get_distance(0, 0) == 0.0);
+    }
+    
+    #[test]
+    fn test_tsp_get_n_set(){
+        let mut tsp = TSP::new(5);
+        tsp.set_distance(1, 0, 1.0);
+        assert!(tsp.get_distance(1, 0) == 1.0);
+        assert!(tsp.get_distance(0, 1) == 1.0);
+        tsp.set_distance(0, 0, 9.0);
+        assert!(tsp.get_distance(0, 0) == 0.0);
+        
+        tsp.set_node(1,2);
+        tsp.set_node(2,1);
+        assert!(tsp.get_node(0) == 0);
+        assert!(tsp.get_node(1) == 2);
+        assert!(tsp.get_node(2) == 1);
+        assert!(tsp.get_node(3) == 3);
+        assert!(tsp.get_node(4) == 4);
     }
     
     #[test]
