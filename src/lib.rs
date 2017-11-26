@@ -157,20 +157,23 @@ mod tests {
     #[test]
     fn test_tsp_new(){
         let tsp = TSP::new(5);
-        assert!(tsp.get_distance(0, 1).is_finite());
-        assert!(tsp.get_distance(0, 5).is_infinite());
-        assert!(tsp.get_distance(5, 0).is_infinite());
-        assert!(tsp.get_distance(0, 0) == 0.0);
+        for x in 0..5{
+            assert!(tsp.get_node(x) == x);
+        }
     }
     
     #[test]
+    fn test_tsp_ff_new(){
+        let tsp_ff = TSPFitnessFunction::new(5);
+        assert!(tsp_ff.get_distance(0, 1).is_finite());
+        assert!(tsp_ff.get_distance(0, 5).is_infinite());
+        assert!(tsp_ff.get_distance(5, 0).is_infinite());
+        assert!(tsp_ff.get_distance(0, 0) == 0.0);
+    }
+        
+    #[test]
     fn test_tsp_get_n_set(){
         let mut tsp = TSP::new(5);
-        tsp.set_distance(1, 0, 1.0);
-        assert!(tsp.get_distance(1, 0) == 1.0);
-        assert!(tsp.get_distance(0, 1) == 1.0);
-        tsp.set_distance(0, 0, 9.0);
-        assert!(tsp.get_distance(0, 0) == 0.0);
         
         tsp.set_node(1,2);
         tsp.set_node(2,1);
@@ -184,36 +187,47 @@ mod tests {
     #[test]
     fn test_tsp_clone(){
         let mut tsp = TSP::new(3);
-        tsp.set_distance(1, 0, 1.0);
-        tsp.set_distance(1, 2, 2.0);
-        tsp.set_distance(0, 2, 3.0);
         tsp.set_node(1, 2);
         tsp.set_node(2, 1);
         let tsp2 = tsp.clone();
         assert!(tsp2.get_node(0) == 0);
         assert!(tsp2.get_node(1) == 2);
         assert!(tsp2.get_node(2) == 1);
-        assert!(tsp2.get_distance(0, 0) == 0.0);
-        assert!(tsp2.get_distance(0, 1) == 1.0);
-        assert!(tsp2.get_distance(0, 2) == 3.0);
-        assert!(tsp2.get_distance(1, 0) == 1.0);
-        assert!(tsp2.get_distance(1, 1) == 0.0);
-        assert!(tsp2.get_distance(1, 2) == 2.0);
-        assert!(tsp2.get_distance(2, 0) == 3.0);
-        assert!(tsp2.get_distance(2, 1) == 2.0);
-        assert!(tsp2.get_distance(2, 2) == 0.0);
+    }
+    
+    #[test]
+    fn test_tsp_ff_clone(){
+        let mut tsp_ff = TSPFitnessFunction::new(3);
+        tsp_ff.set_distance(1, 0, 1.0);
+        tsp_ff.set_distance(1, 2, 2.0);
+        tsp_ff.set_distance(0, 2, 3.0);
+        
+        let tsp_ff_2 = tsp_ff.clone();
+        
+        assert!(tsp_ff_2.get_distance(0, 0) == 0.0);
+        assert!(tsp_ff_2.get_distance(0, 1) == 1.0);
+        assert!(tsp_ff_2.get_distance(0, 2) == 3.0);
+        assert!(tsp_ff_2.get_distance(1, 0) == 1.0);
+        assert!(tsp_ff_2.get_distance(1, 1) == 0.0);
+        assert!(tsp_ff_2.get_distance(1, 2) == 2.0);
+        assert!(tsp_ff_2.get_distance(2, 0) == 3.0);
+        assert!(tsp_ff_2.get_distance(2, 1) == 2.0);
+        assert!(tsp_ff_2.get_distance(2, 2) == 0.0);
     }
     
     #[test]
     fn test_tsp_fitness_function(){
         let mut tsp = TSP::new(3);
-        tsp.set_distance(1, 0, 1.0);
-        tsp.set_distance(1, 2, 2.0);
-        tsp.set_distance(0, 2, 3.0);
+        let mut fitness_function = TSPFitnessFunction::new(3);
+        fitness_function.set_distance(1, 0, 1.0);
+        fitness_function.set_distance(1, 2, 2.0);
+        fitness_function.set_distance(0, 2, 3.0);
         tsp.set_node(1, 2);
         tsp.set_node(2, 1);
-        let fitness_function = TSPFitnessFunction{};
+       
         assert!(fitness_function.get_fitness(&tsp) == 6.0);
+        let tsp2 = TSP::new(4);
+        assert!(fitness_function.get_fitness(&tsp2) == 0.0);
     }
     
     #[test]
