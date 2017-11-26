@@ -181,6 +181,29 @@ mod tests {
     }
     
     #[test]
+    fn test_tsp_clone(){
+        let mut tsp = TSP::new(3);
+        tsp.set_distance(1, 0, 1.0);
+        tsp.set_distance(1, 2, 2.0);
+        tsp.set_distance(0, 2, 3.0);
+        tsp.set_node(1, 2);
+        tsp.set_node(2, 1);
+        let tsp2 = tsp.clone();
+        assert!(tsp2.get_node(0) == 0);
+        assert!(tsp2.get_node(1) == 2);
+        assert!(tsp2.get_node(2) == 1);
+        assert!(tsp2.get_distance(0, 0) == 0.0);
+        assert!(tsp2.get_distance(0, 1) == 1.0);
+        assert!(tsp2.get_distance(0, 2) == 3.0);
+        assert!(tsp2.get_distance(1, 0) == 1.0);
+        assert!(tsp2.get_distance(1, 1) == 0.0);
+        assert!(tsp2.get_distance(1, 2) == 2.0);
+        assert!(tsp2.get_distance(2, 0) == 3.0);
+        assert!(tsp2.get_distance(2, 1) == 2.0);
+        assert!(tsp2.get_distance(2, 2) == 0.0);
+    }
+    
+    #[test]
     fn it_works() {
     }
     

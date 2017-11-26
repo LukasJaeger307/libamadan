@@ -63,3 +63,53 @@ impl TSP{
         }
     }
 }
+
+impl Clone for TSP{
+    fn clone(&self) -> Self{
+        let mut list_nodes : Vec<u32> = vec![];
+        let mut matrix : Vec<Vec<f64>> = vec![];
+        for x in 0..self.num_nodes{
+            list_nodes.push(self.list_nodes[x as usize]);
+            let mut matrix_element : Vec<f64> = vec![];
+            for y in 0..self.num_nodes{
+                matrix_element.push(self.matrix[x as usize][y as usize]);
+            }
+            matrix.push(matrix_element);
+        }
+        TSP{
+            num_nodes : self.num_nodes,
+            list_nodes : list_nodes,
+            matrix : matrix
+        }
+    }
+}
+
+/*
+struct TSPFitnessFunction;
+    
+impl FitnessFunction<TSP> for TSPFitnessFunction{
+    fn get_fitness(&self, solution: &TSP) -> f64{
+        0.0
+    }
+}
+
+    
+struct TSPRandomSolutionGenerator;
+    
+impl RandomSolutionGenerator<TSP> for TSPRandomSolutionGenerator{
+    fn generate_random(&self) -> TSP{
+
+    }
+        
+    fn mutate(&self, current : &TSP) -> TSP{
+        
+    }
+}
+
+struct TSPRecombinationGenerator;
+
+impl RecombinationGenerator<TSP> for TSPRecombinationGenerator{
+    fn recombine(&self, i1 : &TSP, i2 : &TSP) -> TSP{
+
+    }
+}*/
