@@ -6,9 +6,11 @@
  * http://www.wtfpl.net/ for more details. 
  */
  
+extern crate rand;
 //use metaheuristic::Metaheuristic;
-//use rndsolutiongenerator::RandomSolutionGenerator;
+use rndsolutiongenerator::RandomSolutionGenerator;
 use fitnessfunction::FitnessFunction;
+use rand::Rng;
 
 use std::f64;
 
@@ -145,19 +147,55 @@ impl Clone for TSPFitnessFunction {
 }
 
 
-/*struct TSPRandomSolutionGenerator;
+pub struct TSPRandomSolutionGenerator{
+    num_nodes : u32,
+}
+
+impl TSPRandomSolutionGenerator{
+    pub fn new(num_nodes : u32) -> TSPRandomSolutionGenerator{
+        TSPRandomSolutionGenerator{
+            num_nodes : num_nodes,
+        }
+    }
+    
+    fn switch(&self, tsp : &mut TSP, node1 : u32, node2 : u32){
+        let n1: u32 = tsp.get_node(node1);
+        let n2: u32 = tsp.get_node(node2);
+        tsp.set_node(node1, n2);
+        tsp.set_node(node2, n1);
+    }
+    
+    fn switch_random(&self, mut tsp : &mut TSP){
+        let mut rng = rand::thread_rng();
+        let node1 = rng.gen_range(0, self.num_nodes);
+        let mut node2 = node1;
+        while node2 == node1 {
+            node2 = rng.gen_range(0, self.num_nodes);
+        }
+        self.switch(&mut tsp, node1, node2);
+    }
+}
     
 impl RandomSolutionGenerator<TSP> for TSPRandomSolutionGenerator{
+    
     fn generate_random(&self) -> TSP{
-        
+        let mut tsp = TSP::new(self.num_nodes);
+        let mut rng = rand::thread_rng();
+		let times : u32 = rng.gen_range(0, 100);
+		for _ in 0..times{
+			self.switch_random(&mut tsp);
+		}
+        tsp
     }
         
     fn mutate(&self, current : &TSP) -> TSP{
-        
+        let mut tsp = current.clone();
+        self.switch_random(&mut tsp);
+        tsp
     }
 }
 
-struct TSPRecombinationGenerator;
+/*struct TSPRecombinationGenerator;
 
 impl RecombinationGenerator<TSP> for TSPRecombinationGenerator{
     fn recombine(&self, i1 : &TSP, i2 : &TSP) -> TSP{
