@@ -24,7 +24,7 @@ mod tests {
     //use genetic::GeneticAlgorithm;
     use tsp::TSP;
     use tsp::TSPFitnessFunction;
-    
+    use tsp::TSPRandomSolutionGenerator;
     struct SquareFitnessFunction;
     
      impl FitnessFunction<f64> for SquareFitnessFunction{
@@ -230,6 +230,19 @@ mod tests {
         let tsp2 = TSP::new(4);
         assert!(fitness_function.get_fitness(&tsp2) == 0.0);
     }
+
+	#[test]
+	fn test_tsp(){
+		let mut tsp_ff = TSPFitnessFunction::new(4);
+		let mut tsp_rsg = TSPRandomSolutionGenerator{num_nodes : 4};
+		let rrt : RRT<TSP> = RRT::new(&tsp_rsg, &tsp_ff, 10000, 100, 10.0);
+        let optimum : TSP = rrt.find();
+		for x in 0.. optimum.get_num_nodes(){
+			println!("Optimum: {}", optimum.get_node(x));
+		}
+        
+        
+	}
     
     #[test]
     fn it_works() {

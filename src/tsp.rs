@@ -148,7 +148,7 @@ impl Clone for TSPFitnessFunction {
 
 
 pub struct TSPRandomSolutionGenerator{
-    num_nodes : u32,
+    pub num_nodes : u32,
 }
 
 impl TSPRandomSolutionGenerator{
